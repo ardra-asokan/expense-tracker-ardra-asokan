@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple and responsive Expense Tracker application">
+  <title>Expense Tracker</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* center the chart heading */
+    .category-section .section-header {
+      justify-content: center;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container">
+
+    <header class="app-header">
+      <div>
+        <h1>Expense Tracker</h1>
+        <p>Track your spending and manage your money with ease</p>
+      </div>
+    </header>
+
+    <!-- summary cards -->
+    <section class="summary-section">
+      <div class="summary-card income-card">
+        <div class="summary-icon">↑</div>
+        <div>
+          <p>Total Income</p>
+          <h2 id="total-income">₹0.00</h2>
+        </div>
+      </div>
+
+      <div class="summary-card expense-card">
+        <div class="summary-icon">↓</div>
+        <div>
+          <p>Total Expenses</p>
+          <h2 id="total-expenses">₹0.00</h2>
+        </div>
+      </div>
+
+      <div class="summary-card balance-card">
+        <div class="summary-icon">₹</div>
+        <div>
+          <p>Current Balance</p>
+          <h2 id="current-balance">₹0.00</h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- add / edit form -->
+    <section class="content-section">
+      <div class="section-header" style="display: block; text-align: center;">
+        <div>
+          <h2>Add Transaction</h2>
+          <!-- <p>Record your income or expense</p> -->
+        </div>
+      </div>
+
+      <form id="transaction-form">
+        <div class="form-group">
+          <label for="transaction-type">Transaction Type</label>
+          <select id="transaction-type" required>
+            <option value="">Select type</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" placeholder="Enter amount" min="0.01" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="">Select category</option>
+            <option value="Salary">Salary</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Health">Health</option>
+            <option value="Education">Education</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" id="date" required>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="description">Description</label>
+          <input type="text" id="description" placeholder="Enter a short description" maxlength="100" required>
+        </div>
+
+        <!-- validation errors show up here -->
+        <div id="form-message" class="form-message" role="alert"></div>
+
+        <div class="form-actions" style="justify-content: center;">
+          <button type="submit" id="submit-button" class="primary-button">Add Transaction</button>
+          <button type="button" id="cancel-edit-button" class="secondary-button hidden">Cancel Edit</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- transaction list -->
+    <section class="content-section">
+      <div class="section-header" style="display: block; text-align: center;">
+        <div>
+          <h2>Transactions</h2>
+          <p>View and manage your transactions</p>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group">
+          <label for="type-filter">Type</label>
+          <select id="type-filter">
+            <option value="all">All</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="category-filter">Category</label>
+          <select id="category-filter">
+            <option value="all">All Categories</option>
+            <option value="Salary">Salary</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Health">Health</option>
+            <option value="Education">Education</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="transaction-container">
+        <div class="transaction-header">
+          <span>Transaction</span>
+          <span>Category</span>
+          <span>Date</span>
+          <span>Amount</span>
+          <span>Actions</span>
+        </div>
+
+        <!-- script.js fills this in -->
+        <div id="transaction-list" class="transaction-list">
+          <div id="empty-state" class="empty-state">
+            <div class="empty-icon">₹</div>
+            <h3>No transactions yet</h3>
+            <p>Add your first income or expense to get started.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- monthly summary -->
+    <section class="content-section">
+      <div class="section-header">
+        <div>
+          <h2>Monthly Summary</h2>
+          <p>Track your income and expenses for the month</p>
+        </div>
+
+        <div class="month-selector">
+          <label for="summary-month">Month</label>
+          <input type="month" id="summary-month">
+        </div>
+      </div>
+
+      <div class="monthly-summary">
+        <div class="monthly-card">
+          <p>Monthly Income</p>
+          <h3 id="monthly-income">₹0.00</h3>
+        </div>
+
+        <div class="monthly-card">
+          <p>Monthly Expenses</p>
+          <h3 id="monthly-expenses">₹0.00</h3>
+        </div>
+
+        <div class="monthly-card">
+          <p>Monthly Balance</p>
+          <h3 id="monthly-balance">₹0.00</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- expense chart -->
+    <section class="content-section category-section">
+      <div class="section-header">
+        <div>
+          <h2>Expense by Category</h2>
+          <p>Understand your spending by category</p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="expense-chart" aria-label="Category-wise expense chart"></canvas>
+        <div id="chart-empty-state" class="chart-empty-state">No expense data available yet.</div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>© 2026 Expense Tracker. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
